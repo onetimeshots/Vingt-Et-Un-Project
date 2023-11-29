@@ -1,0 +1,92 @@
+# Blackjack/Vingt-et-un Game
+# This is a dice game that is played against a computer, which draws numbers until hitting 21 or above it. 
+
+# Rand
+import random
+
+# Dice Randomizer
+def roll():
+    return random.randint(1, 6), random.randint(1, 6)
+
+# Score Calculator 
+def score(dice):
+    score = sum(dice)
+    if score >= 14:
+        score -= dice[0]
+    return score
+
+# Print Rules
+def rules():
+    print("Welcome to Vingt-et-un!")
+    print("For each turn, you will have the option to roll the dice or stay. If you choose to roll, your score will be added.")
+    print("If you choose to stay, the turn will pass to the house. The house will choose to stay if its score is 17 or higher.")
+    print("If you go over 21, you lose. If the house goes over 21, you win.")
+    print("-----------------------------")
+
+# Vingt Et Un Game 
+def game(name):
+    print(f"Welcome {name}!")
+
+    while True:
+        player = 0
+        house = 0
+
+        # Player's turn
+        while True:
+            choice = input("Do you want to roll or stay?: ")
+            if choice.lower() == "roll":
+                dice = roll()
+                player += score(dice)
+                print(f"You rolled {dice}. Your score is {player}.")
+                if player > 21:
+                    print("You were Busted!")
+                    break
+                elif player == 21:
+                    print("You hit 21!")
+                    break
+            elif choice.lower() == "stay":
+                break
+
+        # House turn
+        if player <= 21:
+            while house < 17:
+                dice = roll()
+                house += score(dice)
+                print(f"The house rolled {dice}. Its score is {house}.")
+                if house > 21:
+                    print("The house busted!")
+                    break
+                elif house == 21:
+                    print("The house hit 21!")
+                    break
+
+        # Winner
+        if player > 21:
+            print("You lose.")
+        elif house > 21:
+            print("You win!")
+        elif player > house:
+            print("You win!")
+        elif player < house:
+            print("You lose.")
+        else:
+            print("A Tie!")
+
+        # Play Again
+        choice = input("Do you want to play again?: ")
+        if choice.lower() != "yes":
+            break
+
+# Main Menu
+while True:
+    choice = input("**Welcome to Vingt-et-un** Choose an option:\n1. See the rules\n2. Play Vingt-et-un\n3. Quit\n")
+    if choice == "1":
+        rules()
+    elif choice == "2":
+        name = input("What is your name?: ")
+        game(name)
+    elif choice == "3":
+        print("Thank you for playing!")
+        break
+    else:
+        print("Invalid choice. Please choose a correct option.")
